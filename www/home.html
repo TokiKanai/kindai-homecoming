@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <script src="cordova.js"></script>
+    <link rel="stylesheet" href="css/home.css">
+    <script src="components/loader.js"></script>
+    <title>イベントアプリ - ホーム</title>
+</head>
+<body>
+    <header>
+        <h1>ホーム</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="shop.html">お店情報</a></li>
+            <li><a href="map.html">マップ</a></li>
+            <li><a href="profile.html">プロフィール</a></li>
+        </ul>
+    </nav>
+
+</body>
+
+    <!-- フッターの読み込み -->
+    <div id="footer"></div>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('footer').innerHTML = data)
+            .catch(error => console.log('Error loading footer:', error));
+    </script>
+    
+</html>

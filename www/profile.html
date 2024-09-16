@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <script src="cordova.js"></script>
+    <link rel="stylesheet" href="css/profile.css">
+    <script>
+        // 仮のデータベースでのパスワードを保存
+let storedPassword = "password123"; // ユーザーが登録した元のパスワード
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    // ユーザー名編集機能
+    document.querySelector('.edit-icon').addEventListener('click', function() {
+        document.getElementById('display-username').style.display = 'none'; // ユーザー名表示非表示
+        document.getElementById('username-input').style.display = 'block';  // 入力欄表示
+        document.getElementById('update-username-btn').style.display = 'block';  // 更新ボタン表示
+    });
+
+    document.getElementById('update-username-btn').addEventListener('click', function() {
+        const newUsername = document.getElementById('username-input').value;
+        document.getElementById('display-username').textContent = newUsername + ' 🖊'; // ユーザー名にペンアイコン追加
+        document.getElementById('display-username').style.display = 'block'; // ユーザー名表示
+        document.getElementById('username-input').style.display = 'none'; // 入力欄非表示
+        document.getElementById('update-username-btn').style.display = 'none'; // 更新ボタン非表示
+    });
+
+    // メールアドレスを更新する機能
+    document.getElementById('update-email-btn').addEventListener('click', function() {
+        const emailInput = document.getElementById('email-input').value;
+        document.getElementById('display-email').textContent = emailInput; // メールアドレスを表示する箇所に反映
+        document.getElementById('email-message').textContent = "メールアドレスが変更されました";
+        document.getElementById('email-message').style.color = "green"; // 成功メッセージを緑で表示
+    });
+
+    // パスワードを更新する機能
+    document.getElementById('update-password-btn').addEventListener('click', function() {
+        const oldPasswordInput = document.getElementById('old-password').value;
+        const newPasswordInput = document.getElementById('new-password').value;
+
+        // 元のパスワードをチェック
+        if (oldPasswordInput === storedPassword) {
+            // パスワードを新しいものに変更
+            storedPassword = newPasswordInput;
+            document.getElementById('password-message').textContent = "パスワードが正常に変更されました！";
+            document.getElementById('password-message').style.color = "green";
+        } else {
+            // エラーメッセージを表示
+            document.getElementById('password-message').textContent = "元のパスワードが正しくありません。";
+            document.getElementById('password-message').style.color = "red";
+        }
+    });
+
+    // ログアウト機能
+    document.getElementById("logout-btn").addEventListener("click", function () {
+        if (confirm("本当にログアウトしますか？")) {
+            // ログアウト処理の実行
+            executeLogout();
+        }
+    });
+
+    // アカウント削除機能
+    document.getElementById("delete-account-btn").addEventListener("click", function () {
+        if (confirm("本当にアカウントを削除しますか？")) {
+            // アカウント削除処理の実行
+            executeAccountDeletion();
+        }
+    });
+
+});
+
+// ログアウト処理を実行する関数
+function executeLogout() {
+    // ログアウト処理（仮: サーバーにセッション無効化のリクエストを送るなど）
+    console.log("ログアウトが実行されました。");
+
+    // ログインページにリダイレクト
+    redirectToLogin();
+}
+
+// アカウント削除処理を実行する関数
+function executeAccountDeletion() {
+    // アカウント削除処理（仮: サーバーにアカウント削除リクエストを送るなど）
+    console.log("アカウントが削除されました。");
+
+    // ログインページにリダイレクト
+    redirectToLogin();
+}
+
+// ログインページにリダイレクトする関数
+function redirectToLogin() {
+    // ここでログインページのURLを指定
+    const loginPageURL = "login.html"; // 仮のログインページURL
+    window.location.href = loginPageURL;
+}
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>プロフィール</h1>
+        <hr class="hr1">
+
+        <!-- 角の丸い四角形 -->
+        <div class="rounded-box">
+            <div class="profile-content">
+                <div class="profile-image">
+                    <img id="profile-pic" src="usericon.png" alt="プロフィール画像">
+                </div>
+                <div class="profile-details">
+                    <p id="display-username">山田太郎 <span class="edit-icon">🖊</span></p> <!-- ユーザー名とペンアイコン -->
+                    <input type="text" id="username-input" style="display: none;" placeholder="新しいユーザー名を入力"> <!-- ユーザー名入力欄 -->
+                    <button id="update-username-btn" style="display: none;">更新</button> <!-- ユーザー名更新ボタン -->
+                    <p id="display-email">yamada@example.com</p> <!-- メールアドレスを表示する箇所 -->
+                </div>
+            </div>
+        </div>
+
+        <h2>ユーザー情報</h2>
+        <hr class="hr2">
+
+        <div class="mail-detail">
+            <label for="email-input">メールアドレス</label>
+            <input type="email" id="email-input" value="yamada@example.com">
+            <button id="update-email-btn">メールアドレスを更新</button>
+            <p id="email-message" class="message"></p> <!-- メールアドレス更新メッセージ -->
+        </div>
+
+        <div class="password-detail">
+            <label for="old-password">元のパスワード</label>
+            <input type="password" id="old-password" placeholder="元のパスワードを入力">
+            
+            <label for="new-password">新しいパスワード</label>
+            <input type="password" id="new-password" placeholder="新しいパスワードを入力">
+            <button id="update-password-btn">パスワードを更新</button>
+            <p id="password-message" class="message"></p> <!-- パスワード更新メッセージ -->
+             <!-- パスワード更新ボタンの下にログアウトとアカウント削除ボタンを追加 -->
+        <div class="logout-account-group">
+            <button id="logout-btn" class="danger-btn">ログアウト</button>
+            <button id="delete-account-btn" class="danger-btn">アカウント削除</button>
+        </div>
+
+        </div>
+
+        
+        
+
+    </div>
+</body>
+
+    <div id="footer"></div>
+        <script>
+            fetch('footer.html')
+                .then(response => response.text())
+                .then(data => document.getElementById('footer').innerHTML = data)
+                .catch(error => console.log('Error loading footer:', error));
+        </script>
+</html>

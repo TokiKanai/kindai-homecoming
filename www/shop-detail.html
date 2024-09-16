@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>お店の場所</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
+    <style>
+        /* 必要なスタイルをここに追加 */
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
+    <script type="module">
+        // Firebaseのモジュールをインポート
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+        // Firebaseの設定（同じなので省略可能）
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYn4k7iSTe35saD0ObLpnE4v61XMvoV-w",
+            authDomain: "envent-kindai.firebaseapp.com",
+            projectId: "envent-kindai",
+            storageBucket: "envent-kindai.appspot.com",
+            messagingSenderId: "142619280518",
+            appId: "1:142619280518:web:9fe07ecf148b0faa93bd07",
+            measurementId: "G-1SKEWPQHKG"
+        };
+
+        // Firebaseを初期化
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // URLからshopIdを取得
+        const urlParams = new URLSearchParams(window.location.search);
+        const shopId = urlParams.get('shopId');
+
+        if (shopId) {
+            const shopRef = ref(database, 'shops/' + shopId);
+
+            get(shopRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const shop = snapshot.val();
+                    const latitude = shop.latitude;
+                    const longitude = shop.longitude;
+                    const name = shop.name;
+
+                    // マップを初期化してピンを追加
+                    mapboxgl.accessToken = 'pk.eyJ1IjoidG9reW9hbmRvc2thIiwiYSI6ImNsdmV1ZHFscDBlMGwya24xY2c2dXh0Y3QifQ.EOpjf8p98ViGswbwRVP_3w';
+                    const map = new mapboxgl.Map({
+                        container: 'map',
+                        style: 'mapbox://styles/tokyoandoska/cm0ca53jl00uf01psaau71iuw',
+                        center: [longitude, latitude], // ショップの位置を中心に設定
+                        zoom: 15,
+                    });
+
+                    new mapboxgl.Marker()
+                        .setLngLat([longitude, latitude])
+                        .setPopup(new mapboxgl.Popup({ offset: 25 }).setText(name))
+                        .addTo(map);
+                } else {
+                    console.error('ショップが見つかりません');
+                }
+            }).catch((error) => {
+                console.error('データ取得エラー:', error);
+            });
+        } else {
+            console.error('shopIdが指定されていません');
+        }
+    </script>
+</body>
+
+        <!-- フッターの読み込み -->
+    <div id="footer"></div>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('footer').innerHTML = data)
+            .catch(error => console.log('Error loading footer:', error));
+    </script>
+</html>

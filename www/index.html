@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/index.css">
+    <title>匿名ログイン</title>
+</head>
+<body>
+    <div class="login-container">
+        <h1>ようこそ、<br>近畿大学ホームカミングデーへ</h1>
+        <button id="anonymousLoginButton">参加する</button>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Firebaseのモジュールをインポート
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
+
+        // Firebaseの設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYn4k7iSTe35saD0ObLpnE4v61XMvoV-w",
+            authDomain: "envent-kindai.firebaseapp.com",
+            projectId: "envent-kindai",
+            storageBucket: "envent-kindai.appspot.com",
+            messagingSenderId: "142619280518",
+            appId: "1:142619280518:web:9fe07ecf148b0faa93bd07",
+            measurementId: "G-1SKEWPQHKG"
+        };
+
+        // Firebaseを初期化
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+
+        // 匿名ログインボタンのクリックイベント
+        document.getElementById('anonymousLoginButton').addEventListener('click', function() {
+            // 匿名ログイン
+            signInAnonymously(auth)
+            .then((userCredential) => {
+                // ログイン成功
+                const user = userCredential.user;
+                console.log('匿名ログイン成功:', user);
+                // ログイン後、ホームページにリダイレクト
+                window.location.href = "home.html";
+            })
+            .catch((error) => {
+                // エラーハンドリング
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.error('ログインエラー:', errorCode, errorMessage);
+            });
+        });
+    </script>
+</body>
+</html>

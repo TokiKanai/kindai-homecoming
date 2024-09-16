@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <script src="cordova.js"></script>
+    <link rel="stylesheet" href="css/event.css">
+    <script src="components/loader.js"></script>
+    <script>
+        //
+        // TODO: Write JavaScript code here
+        //
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>イベント詳細</h1>
+        <hr class="hr1">
+        <div class="event-image">
+            <!-- 画像パスは適宜変更してください -->
+            <img src="kindaifront.jpg" alt="画像未設定">
+        </div>
+        <div class="event-info">
+            <h2>【近畿大学】ホームカミングデー</h2>
+            <p><strong class="label1">場所</strong><span>近畿大学東大阪キャンパス</span></p>
+            <p class="no-margin"><strong class="label1"></strong><span class="address">〒577-8502 大阪府東大阪市小若江3丁目4-1</span></p>
+            <p><strong class="label1">日付</strong><span>2024年10月7日（土）</span></p>
+            <p><strong class="label1">開催時間</strong><span>10:00～17:00</span></p>
+        </div>
+
+        <!-- event-messageをcontainerの中に移動 -->
+        <div class="event-message">
+            <h3>もう一度、近畿大学に帰ろう</h3>
+            <hr class="custom-hr">
+            <div class="detail">
+                <p>概要</p>
+            </div>
+            <div class="overview">
+                <p>1年に1度の近畿大学校友会の大祭典「定期総会」！！</p>
+                <p>ホームカミングデーと同時開催！</p>
+                <p>※定期総会は校友の方が対象です</p>
+                <p>※定期総会参加にはチケットの購入が必要となります</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+    <div id="footer"></div>
+        <script>
+            fetch('footer.html')
+                .then(response => response.text())
+                .then(data => document.getElementById('footer').innerHTML = data)
+                .catch(error => console.log('Error loading footer:', error));
+        </script>
+</html>

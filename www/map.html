@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>近畿大学マップ表示</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #map {
+            width: 100%;
+            height: calc(100vh - 100px); /* フッターとボタンの高さを引いた分だけ縮小 */
+        }
+
+        footer {
+            height: 50px;
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #ddd;
+        }
+
+        footer nav ul {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        footer nav ul a {
+            text-decoration: none;
+            color: #333;
+            font-size: 24px;
+        }
+
+        footer nav ul a:hover {
+            color: #007bff;
+        }
+
+        /* 現在位置に戻るボタンのスタイル */
+        #currentLocationButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #currentLocationButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
+
+    <!-- Firebase SDK - 最新版のモジュール形式 -->
+    <script type="module">
+        // Firebaseのモジュールをインポート
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+        // Firebaseの設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYn4k7iSTe35saD0ObLpnE4v61XMvoV-w",
+            authDomain: "envent-kindai.firebaseapp.com",
+            projectId: "envent-kindai",
+            storageBucket: "envent-kindai.appspot.com",
+            messagingSenderId: "142619280518",
+            appId: "1:142619280518:web:9fe07ecf148b0faa93bd07",
+            measurementId: "G-1SKEWPQHKG"
+        };
+
+        // Firebaseを初期化
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Firebaseからデータを取得してマップに表示
+        const dbRef = ref(database, 'shops');
+        
+        onValue(dbRef, (snapshot) => {
+            const shops = snapshot.val();
+            const bounds = new mapboxgl.LngLatBounds();
+
+            for (let key in shops) {
+                const shop = shops[key];
+                const latitude = shop.latitude;
+                const longitude = shop.longitude;
+                const name = shop.name;
+
+                // マップにピンを追加
+                new mapboxgl.Marker()
+                    .setLngLat([longitude, latitude])
+                    .setPopup(new mapboxgl.Popup({ offset: 25 }).setText(name)) // ポップアップを設定
+                    .addTo(map);
+
+                // 境界に現在のお店の座標を追加
+                bounds.extend([longitude, latitude]);
+            }
+
+            // 全てのピンが表示されるようにマップを調整
+            map.fitBounds(bounds, { padding: 50 });
+        });
+
+        // Mapboxマップの初期化
+        mapboxgl.accessToken = 'pk.eyJ1IjoidG9reW9hbmRvc2thIiwiYSI6ImNsdmV1ZHFscDBlMGwya24xY2c2dXh0Y3QifQ.EOpjf8p98ViGswbwRVP_3w';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/tokyoandoska/cm0ca53jl00uf01psaau71iuw',
+            center: [135.5763, 34.6704],
+            zoom: 15,
+            pitch: 45,
+            bearing: -17.6
+        });
+
+        // 現在地ボタンを追加
+        const geolocateControl = new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true // 高精度の位置情報を使用
+            },
+            trackUserLocation: true, // ユーザーの位置を追跡
+            showUserHeading: true // ユーザーの向きを表示
+        });
+        map.addControl(geolocateControl);
+
+        // 「現在位置に戻る」ボタンをクリックしたときに現在地を表示する
+        document.getElementById('currentLocationButton').addEventListener('click', function() {
+            geolocateControl.trigger(); // 現在地の表示を開始
+        });
+
+    </script>
+
+    <!-- フッターの読み込みをfetchで実装 -->
+    <div id="footer"></div>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('footer').innerHTML = data)
+            .catch(error => console.log('Error loading footer:', error));
+    </script>
+
+</body>
+</html>

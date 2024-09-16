@@ -1,0 +1,181 @@
+/* This is a CSS file */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333333;
+    font-size: 1.2em;
+    font-weight: normal;
+}
+
+.hr1 {
+    width: 100%; /* 端から端まで伸ばす */
+    margin: 0; /* 余計な上下の余白を削除 */
+    border: none; /* デフォルトのボーダーを削除 */
+    border-top: 2px solid #adadad; /* 好みの太さと色で水平線を設定 */
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    padding-bottom: 60px; /* フッターの高さに合わせて下に余白を追加 */
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-image img {
+    display: block; /* インライン要素でないことを保証 */
+    margin: 40px auto 20px auto; /* 上: 40px, 左右: autoでセンタリング, 下: 20px */
+    width: 85%; /* 画像の幅を85%に設定 */
+    height: auto;
+    border-radius: 20px;
+}
+
+.event-info h2 {
+    color: #333333;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.event-info p {
+    display: flex;
+    align-items: center;
+    margin: 20px 0; /* 他の項目には10pxの余白を設定 */
+    color: #333333;
+}
+
+/* 住所の行に余白をなくす */
+.no-margin {
+    margin: 0;
+    padding: 0; /* パディングも削除 */
+}
+
+.label1 {
+    color: #333333;
+    position: relative;
+    padding-right: 20px;
+    margin-right: 40px;
+    width: 100px;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.label1::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: rgba(131, 131, 131, 0.3);
+}
+
+.line-custom {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 2px;
+    height: 100%;
+}
+
+.event-info span {
+    flex: 1;
+    color: #333333;
+}
+
+.event-info .address {
+    margin: 0;
+    color: #666666;
+}
+
+.event-message {
+    margin-top: 20px;
+}
+
+.event-message h3 {
+    color: #333;
+    margin-top: 70px;
+    text-align: center;
+    font-size: 30px;
+}
+
+.custom-hr {
+    width: 60%;
+    border: none;
+    border-top: 2px solid rgba(126, 126, 126, 0.5);
+    margin: 20px auto;
+}
+
+.detail {
+    text-align: center;
+    background-color: #ffd79b;
+    width: 13%;
+    border-radius: 15px;
+    padding: 2px 0;
+    line-height: 1.5;
+    margin-left: 15px;
+}
+
+.overview {
+    margin-left: 40px;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.overview p {
+    color: #333333;
+}
+
+.tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--tab-bar-color, #fff);
+    display: flex;
+    justify-content: space-around;
+    padding: 0.5rem 0;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.tab-item {
+    text-align: center;
+    color: var(--tab-bar-icon-color, #555);
+    font-size: 0.8rem;
+    text-decoration: none;
+    flex: 1;
+}
+
+.tab-item .icon {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.tab-item:hover, .tab-item.active {
+    color: var(--tab-bar-icon-active-color, #007BFF);
+}
+
+footer {
+    background-color: var(--footer-color, #333);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}

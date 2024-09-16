@@ -1,0 +1,48 @@
+/* This is a CSS file */
+
+/* 全体のスタイル設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ボディ全体のスタイル */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+
+/* タイトルのスタイル */
+.login-container h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* ボタンのスタイル */
+#anonymousLoginButton {
+    background-color: #45BF89;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 250px;
+}
+
+#anonymousLoginButton:hover {
+    background-color: #333333;
+}
+
+

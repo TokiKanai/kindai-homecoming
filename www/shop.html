@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <script src="cordova.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="components/loader.js"></script>
+    <title>イベントアプリ - お店情報</title>
+</head>
+<body>
+    <header>
+        <h1>お店情報</h1>
+    </header>
+
+    <ul id="shopList">
+        <!-- Firebaseから取得したお店情報をここに表示 -->
+    </ul>
+
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Firebase SDKをモジュールとしてインポート
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+        // Firebaseの設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyCYn4k7iSTe35saD0ObLpnE4v61XMvoV-w",
+            authDomain: "envent-kindai.firebaseapp.com",
+            databaseURL: "https://envent-kindai-default-rtdb.firebaseio.com",
+            projectId: "envent-kindai",
+            storageBucket: "envent-kindai.appspot.com",
+            messagingSenderId: "142619280518",
+            appId: "1:142619280518:web:9fe07ecf148b0faa93bd07",
+            measurementId: "G-1SKEWPQHKG"
+        };
+
+        // Firebaseを初期化
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Firebase Realtime Databaseの参照
+        const dbRef = ref(database, 'shops');
+        const shopList = document.getElementById('shopList');
+
+    onValue(dbRef, (snapshot) => {
+        const data = snapshot.val();
+        shopList.innerHTML = ''; // 既存のリストをクリア
+
+        for (let key in data) {
+            const shop = data[key];
+
+            // 各お店情報をHTML要素として作成
+            const shopItem = `
+                <li class="shop-card">
+                    <div class="shop-image">
+                        <img src="${shop.imageUrl}" alt="${shop.name}">
+                    </div>
+                    <div class="shop-info">
+                        <h3>${shop.name}</h3>
+                        <p class="shop-type">${shop.type}</p>
+                        <button class="view-location-button" data-shop-id="${key}">場所を表示</button>
+                    </div>
+                </li>
+            `;
+            shopList.innerHTML += shopItem;
+        }
+
+        // 場所を表示ボタンにイベントリスナーを追加
+        const buttons = document.querySelectorAll('.view-location-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const shopId = e.target.getAttribute('data-shop-id');
+                // shop-detail.htmlにショップIDをクエリパラメータとして渡す
+                window.location.href = `shop-detail.html?shopId=${shopId}`;
+            });
+        });
+    });
+</script>
+
+</body>
+
+    <!-- フッターの読み込み -->
+    <div id="footer"></div>
+
+    <!-- フッターの動的読み込み（Fetch APIを使用） -->
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            })
+            .catch(error => console.error('フッターの読み込みエラー:', error));
+    </script>
+</html>
